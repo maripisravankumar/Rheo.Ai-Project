@@ -1,0 +1,212 @@
+#include<iostream>
+#include<map>
+using namespace std;
+class Resource{
+    public:
+        map<string,float> east;
+        map<string,float> west;
+        map<string,int> cpu_count;
+        Resource(){
+            
+            east["large"] = 0.12;
+            east["xlarge"] = 0.23;
+            east["2xlarge"] = 0.45;
+            east["4xlarge"] = 0.774;
+            east["8xlarge"] = 1.4;
+            east["10xlarge"] = 2.82;
+    
+            west["large"] = 0.14;
+            west["2xlarge"] = 0.89;
+            west["4xlarge"] = 0.774;
+            west["8xlarge"] = 1.3;
+            west["10xlarge"] = 2.97;
+
+            cpu_count["large"] = 1;
+            cpu_count["xlarge"] = 2;
+            cpu_count["2xlarge"] = 4;
+            cpu_count["4xlarge"] = 8;
+            cpu_count["8xlarge"] = 16;
+            cpu_count["10xlarge"] = 32;
+        }
+};
+class EastRegion : public Resource{
+    public:
+        void get_cost_for_cpu_hours(int cpu,int hours){
+            map<string,float> :: iterator it;
+            int x=1;
+            for(it=east.begin();it!=east.end();it++){
+                string s=it->first;
+                cout<<"The "<<it->first<<" CPU cost for "<<hours<<" hours for the CPU size of "<<cpu<<" will cost $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
+                x=x*2;
+            }
+        }
+        void get_available_cpu_for_price(int price,int hours){
+            map<string,float> :: iterator it;
+            int x=0;
+            cout<<"Available CPU for your Price range :"<<endl;
+            for(it = east.begin();it!=east.end();it++){
+                float count=0;
+                float n=1;
+                count = n*(it->second)*hours;
+                n=0;
+                while(count<price){
+                    if(n==0){
+                        n++;
+                    }
+                    count = n*(it->second)*hours;
+                    n++;
+                }
+                if(n>0){
+                    cout<<it->first<<" -> "<<n<<endl;
+                }
+            }
+        }
+        void get_servers(int cpu,int cost,int hours){
+            cout<<"Available cpu for your cpu and cost for your given time:"<<endl;
+            map<string,float> :: iterator it;
+            int k=0;
+            for(it = east.begin(); it != east.end();it++){
+                float count=0;    
+                count=cpu*(it->second)*hours;
+                if(cost>=count){
+                    k++;
+                    cout<<it->first<<" -> $:"<<count<<endl;
+                }
+            }
+            if(k==0){
+                    cout<<"None "<<endl;
+            }
+        }
+};
+class WestRegion : public Resource{
+    public:
+        void get_cost_for_cpu_hours(int cpu,int hours){
+            map<string,float> :: iterator it;
+            int x=1;
+            for(it=west.begin();it!=west.end();it++){
+                string s=it->first;
+                cout<<"The "<<it->first<<" CPU cost for "<<hours<<" hours for the CPU size of "<<cpu<<" will cost $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
+                x=x*2;
+            }
+        }
+        void get_available_cpu_for_price(int price,int hours){
+            map<string,float> :: iterator it;
+            int x=0;
+            cout<<"Available CPU for your Price range :"<<endl;
+            for(it = west.begin();it!=west.end();it++){
+                float count=0;
+                float n=1;
+                count = n*(it->second)*hours;
+                n=0;
+                while(count<price){
+                    if(n==0){
+                        n++;
+                    }
+                    count = n*(it->second)*hours;
+                    n++;
+                }
+                if(n>0){
+                    cout<<it->first<<" -> "<<n<<endl;
+                }
+            }
+        }
+        void get_servers(int cpu,int cost,int hours){
+            map<string,float> :: iterator it;
+            int k=0;
+            cout<<"Available cpu for your cpu and cost for your given time:"<<endl;
+            for(it = west.begin(); it != west.end();it++){
+                float count=0;
+                count=cpu*(it->second)*hours;
+                if(cost>=count){
+                    k++;
+                    cout<<it->first<<" -> $:"<<count<<endl;
+                }
+            }
+            if(k==0){
+                cout<<"None "<<endl;
+            }
+        }
+};
+int main(){
+    Resource s;
+    while(1){  
+        cout<<"Enter your prefered Region 1 (or) 2 (or) 0 to exit: "<<endl;
+        cout<<"1.East"<<endl<<"2.West"<<endl;
+        int z;
+        cin>>z;
+        if(z==1){
+            EastRegion er;
+            cout<<"Please Enter your Querries:"<<endl;
+            cout<<"1.Request for Server by providing how many CPU you want and hours"<<endl;
+            cout<<"2.Request for Server by providing the cost you can afford and hours"<<endl;
+            cout<<"3.Request for Server by providing all configuration manually"<<endl;
+            int q;
+            cin>>q;
+            if(q==1){
+                int cpu,hours;
+                cout<<"Enter the CPU you want and Hours you need"<<endl;
+                cin>>cpu>>hours;
+                er.get_cost_for_cpu_hours(cpu,hours);
+                cout<<endl;
+            }
+            else if(q==2){
+                int price,hours;
+                cout<<"Enter AMOUNT and HOURS for server request"<<endl;
+                cin>>price>>hours;
+                er.get_available_cpu_for_price(price,hours);
+                cout<<endl;
+            }
+            else if(q==3){
+                int cpu,hours,price;
+                cout<<"Enter CPU,AMOUNT,HOURS for server request (*IN CORRECT ORDER*)"<<endl;
+                cin>>cpu>>price>>hours;
+                er.get_servers(cpu,price,hours);
+                cout<<endl;
+            }
+            else{
+                cout<<"Wrong Entey"<<endl;
+            }
+            cout<<endl;
+        }
+        else if(z==2){
+            WestRegion wr;
+            cout<<"Please Enter your Querries:"<<endl;
+            cout<<"1.Request for Server by providing how many CPU you want and hours"<<endl;
+            cout<<"2.Request for Server by providing the cost you can afford and hours"<<endl;
+            cout<<"3.Request for Server by providing all configuration manually"<<endl;
+            int q;
+            cin>>q;
+            if(q==1){
+                int cpu,hours;
+                cout<<"Enter the CPU you want and Hours you need"<<endl;
+                cin>>cpu>>hours;
+                wr.get_cost_for_cpu_hours(cpu,hours);
+                cout<<endl;
+            }
+            else if(q==2){
+                int price,hours;
+                cout<<"Enter AMOUNT and HOURS for server request"<<endl;
+                cin>>price>>hours;
+                wr.get_available_cpu_for_price(price,hours);
+                cout<<endl;
+            }
+            else if(q==3){
+                int cpu,hours,price;
+                cout<<"Enter CPU,AMOUNT,HOURS for server request (*IN CORRECT ORDER*)"<<endl;
+                cin>>cpu>>price>>hours;
+                wr.get_servers(cpu,price,hours);
+                cout<<endl;
+            }
+            else{
+                cout<<"Wrong Entry"<<endl;
+            }
+            cout<<endl;
+        }
+        else if(z==0){
+            exit(0);
+        }
+        else{
+            cout<<"Enter correct number"<<endl;
+        }
+    }
+}
