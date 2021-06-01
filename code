@@ -1,12 +1,12 @@
 #include<iostream>
 #include<map>
 using namespace std;
-class Allocation{
+class Resource{
     public:
         map<string,float> east;
         map<string,float> west;
-        map<string,int> cpu_counts;
-        Allocation(){
+        map<string,int> cpu_count;
+        Resource(){
             
             east["large"] = 0.12;
             east["xlarge"] = 0.23;
@@ -29,21 +29,21 @@ class Allocation{
             cpu_count["10xlarge"] = 32;
         }
 };
-class EastRegion : public Allocation{
+class EastRegion : public Resource{
     public:
         void get_cost_for_cpu_hours(int cpu,int hours){
             map<string,float> :: iterator it;
             int x=1;
             for(it=east.begin();it!=east.end();it++){
                 string s=it->first;
-                cout<<"The "<<it->first<<" CPU costs for "<<hours<<" the given hours of CPU size and  "<<cpu<<" will costs $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
+                cout<<"The "<<it->first<<" CPU cost for "<<hours<<" hours for the CPU size of "<<cpu<<" will cost $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
                 x=x*2;
             }
         }
         void get_available_cpu_for_price(int price,int hours){
             map<string,float> :: iterator it;
             int x=0;
-            cout<<"Available CPUS for your mentioned Price range :"<<endl;
+            cout<<"Available CPU for your Price range :"<<endl;
             for(it = east.begin();it!=east.end();it++){
                 float count=0;
                 float n=1;
@@ -62,7 +62,7 @@ class EastRegion : public Allocation{
             }
         }
         void get_servers(int cpu,int cost,int hours){
-            cout<<"Available cpu for your mentioned cpu and costs for your given time:"<<endl;
+            cout<<"Available cpu for your cpu and cost for your given time:"<<endl;
             map<string,float> :: iterator it;
             int k=0;
             for(it = east.begin(); it != east.end();it++){
@@ -78,21 +78,21 @@ class EastRegion : public Allocation{
             }
         }
 };
-class WestRegion : public Allocation{
+class WestRegion : public Resource{
     public:
         void get_cost_for_cpu_hours(int cpu,int hours){
             map<string,float> :: iterator it;
             int x=1;
             for(it=west.begin();it!=west.end();it++){
                 string s=it->first;
-                cout<<"The "<<it->first<<" CPU costs for "<<hours<<" hours in the CPU size of "<<cpu<<" and will cost $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
+                cout<<"The "<<it->first<<" CPU cost for "<<hours<<" hours for the CPU size of "<<cpu<<" will cost $"<<(cpu*(it->second)*hours)/cpu_count[s]<<endl;
                 x=x*2;
             }
         }
         void get_available_cpu_for_price(int price,int hours){
             map<string,float> :: iterator it;
             int x=0;
-            cout<<"Available CPUS for your Price ranges :"<<endl;
+            cout<<"Available CPU for your Price range :"<<endl;
             for(it = west.begin();it!=west.end();it++){
                 float count=0;
                 float n=1;
@@ -113,7 +113,7 @@ class WestRegion : public Allocation{
         void get_servers(int cpu,int cost,int hours){
             map<string,float> :: iterator it;
             int k=0;
-            cout<<"Available cpus for mentioned cpu and costs for your given time:"<<endl;
+            cout<<"Available cpu for your cpu and cost for your given time:"<<endl;
             for(it = west.begin(); it != west.end();it++){
                 float count=0;
                 count=cpu*(it->second)*hours;
@@ -128,23 +128,23 @@ class WestRegion : public Allocation{
         }
 };
 int main(){
-    Allocation s;
+    Resource s;
     while(1){  
-        cout<<"Enter your  selected prefered Region 1 (or) 2 (or) 0 to exit: "<<endl;
-        cout<<"1.East side"<<endl<<"2.West side"<<endl;
+        cout<<"Enter your prefered Region 1 (or) 2 (or) 0 to exit: "<<endl;
+        cout<<"1.East"<<endl<<"2.West"<<endl;
         int z;
         cin>>z;
         if(z==1){
             EastRegion er;
-            cout<<"Please Enter your final Querries like:"<<endl;
-            cout<<"1.Requesting for Servers by providing how many CPU you want and hours"<<endl;
-            cout<<"2.Requesting for Servers by providing the cost you can afford and hours"<<endl;
-            cout<<"3.Requesting for Servers by providing all configuration manually"<<endl;
+            cout<<"Please Enter your Querries:"<<endl;
+            cout<<"1.Request for Server by providing how many CPU you want and hours"<<endl;
+            cout<<"2.Request for Server by providing the cost you can afford and hours"<<endl;
+            cout<<"3.Request for Server by providing all configuration manually"<<endl;
             int q;
             cin>>q;
             if(q==1){
                 int cpu,hours;
-                cout<<"Enter the CPU  you want and Hours you need"<<endl;
+                cout<<"Enter the CPU you want and Hours you need"<<endl;
                 cin>>cpu>>hours;
                 er.get_cost_for_cpu_hours(cpu,hours);
                 cout<<endl;
@@ -171,9 +171,9 @@ int main(){
         else if(z==2){
             WestRegion wr;
             cout<<"Please Enter your Querries:"<<endl;
-            cout<<"1.Requesting for Server by providing how many CPU you want and hours"<<endl;
-            cout<<"2.Requesting for Server by providing the cost you can afford and hours"<<endl;
-            cout<<"3.Requesting for Server by providing all configuration manually"<<endl;
+            cout<<"1.Request for Server by providing how many CPU you want and hours"<<endl;
+            cout<<"2.Request for Server by providing the cost you can afford and hours"<<endl;
+            cout<<"3.Request for Server by providing all configuration manually"<<endl;
             int q;
             cin>>q;
             if(q==1){
