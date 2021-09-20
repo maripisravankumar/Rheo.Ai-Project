@@ -14,4 +14,8 @@ resource allocator module
 ● servers - List of tuples. Each tuple has the server type and number of serve 
 
 
+https://colab.research.google.com/drive/1nHQjTJTbyojJZueQVNQDWAL4XhNi75uL
+AMAZON PRODYCT REVIEW ANLAYSIS 
 
+https://colab.research.google.com/drive/1DTtoKDu82_dV5fpRBpeQhdwjQGcMKk0d#scrollTo=sN6Byb4kw4RJ
+FLIPKART REVIEW ANALYSIS.....er
